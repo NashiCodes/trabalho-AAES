@@ -7,7 +7,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class FileManagerTest {
-    private static final String FILENAME = "Test.json";
+    private final String FILENAME = "/test/" + "Test.json";
 
     @Test
     public void DeveSalvarArquivo() {
@@ -23,9 +23,11 @@ public class FileManagerTest {
     @Test
     public void DeveLerArquivo() {
         try {
+
             FileManager.Save(FILENAME, "{\"Test\": \"Test\"}");
             File file = new File("data" + File.separator + FILENAME);
             assert file.exists();
+
             String content = FileManager.Read(FILENAME);
             assert content.equals("{\"Test\": \"Test\"}\n");
         } catch (IOException e) {
