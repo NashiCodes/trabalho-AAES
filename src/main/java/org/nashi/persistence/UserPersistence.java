@@ -5,12 +5,21 @@ import com.google.gson.reflect.TypeToken;
 import org.nashi.user.User;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
 public class UserPersistence implements Persistence<User> {
     private static UserPersistence instance = new UserPersistence();
+    private final Gson gson;
+    private final Type mapType;
     private String FILENAME = "user.json";
+
+    public UserPersistence() {
+        this.gson = new Gson();
+
+        this.mapType = TypeToken.getParameterized(Map.class, String.class, User.class).getType();
+    }
 
     public static UserPersistence getInstance() {
         if (instance == null) {
@@ -28,33 +37,21 @@ public class UserPersistence implements Persistence<User> {
     }
 
     @Override
-    public void save(Map<String, User> itens) throws IOException {
-        Gson gson = new Gson();
-        String json = gson.toJson(itens);
-
+    public void save(Map<String, User> items) throws IOException {
+        String json = gson.toJson(items, mapType);
         FileManager.Save(FILENAME, json);
     }
 
     @Override
     public Map<String, User> findAll() throws IOException {
-        Gson gson;
         String json;
         try {
-            gson = new Gson();
             json = FileManager.Read(FILENAME);
+            if (json.isEmpty()) return new HashMap<>();
+            return gson.fromJson(json, mapType);
         } catch (IOException e) {
             throw new IOException("File not found");
         }
-
-        var usuarios = new HashMap<String, User>();
-        if (!json.trim().isEmpty()) {
-            var MapType = new TypeToken<HashMap<String, User>>() {
-            }.getType();
-            usuarios = gson.fromJson(json, MapType);
-            if (usuarios == null) usuarios = new HashMap<>();
-        }
-
-        return usuarios;
     }
 
 
