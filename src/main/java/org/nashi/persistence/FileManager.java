@@ -1,4 +1,4 @@
-package org.nashi.Persistence;
+package org.nashi.persistence;
 
 import java.io.*;
 
@@ -13,6 +13,7 @@ public class FileManager {
         while ((line = reader.readLine()) != null) {
             content.append(line).append("\n");
         }
+        reader.close();
 
         return content.toString();
     }

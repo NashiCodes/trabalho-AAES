@@ -1,4 +1,4 @@
-package org.nashi.Persistence;
+package org.nashi.persistence;
 
 import java.io.IOException;
 import java.util.Map;

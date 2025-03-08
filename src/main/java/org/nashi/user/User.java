@@ -1,4 +1,4 @@
-package org.nashi.User;
+package org.nashi.user;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;

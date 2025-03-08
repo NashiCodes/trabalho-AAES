@@ -1,8 +1,8 @@
-package org.nashi.Persistence;
+package org.nashi.persistence;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.nashi.User.User;
+import org.nashi.user.User;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -37,15 +37,20 @@ public class UserPersistence implements Persistence<User> {
 
     @Override
     public Map<String, User> findAll() throws IOException {
-        Gson gson = new Gson();
-        String json = FileManager.Read(FILENAME);
+        Gson gson;
+        String json;
+        try {
+            gson = new Gson();
+            json = FileManager.Read(FILENAME);
+        } catch (IOException e) {
+            throw new IOException("File not found");
+        }
 
         var usuarios = new HashMap<String, User>();
         if (!json.trim().isEmpty()) {
-            var MapType = new TypeToken<Map<String, Object>>() {
+            var MapType = new TypeToken<HashMap<String, User>>() {
             }.getType();
-            usuarios = gson.fromJson(json, new TypeToken<HashMap<String, User>>() {
-            }.getType());
+            usuarios = gson.fromJson(json, MapType);
             if (usuarios == null) usuarios = new HashMap<>();
         }
 
