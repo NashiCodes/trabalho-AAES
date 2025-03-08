@@ -1,8 +1,10 @@
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.nashi.Persistence.UserPersistence;
-import org.nashi.User.User;
+import org.nashi.persistence.UserPersistence;
+import org.nashi.user.User;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
@@ -22,7 +24,7 @@ public class UserPersistenceTest {
         var FILENAMETEST = "/test/" + UserPersistence.getInstance().getFILENAME();
         UserPersistence.getInstance().setFILENAME(FILENAMETEST);
 
-        TestUsers = new HashMap<String, User>();
+        TestUsers = new HashMap<>();
         for (int i = 0; i < 5; i++) {
             var user = new User();
             user.setEmail("test" + i + "@test.com");
@@ -32,17 +34,21 @@ public class UserPersistenceTest {
         }
     }
 
+
     @Test
-    public void Teste1_DeveSalvarUsuario() {
+    public void Teste_DeveSalvarUsuario() {
         try {
             UserPersistence.getInstance().save(UserPersistenceTest.TestUsers);
+            var filePath = "data" + File.separator + "test" + File.separator + "user.json";
+            var file = new File(filePath);
+            assert file.exists();
         } catch (Exception e) {
             fail();
         }
     }
 
     @Test
-    public void Teste2_DeveLerUsuario() {
+    public void Teste_DeveLerUsuario() {
         try {
             UserPersistence.getInstance().save(TestUsers);
             var users = UserPersistence.getInstance().findAll();
@@ -55,4 +61,30 @@ public class UserPersistenceTest {
             fail();
         }
     }
+
+    @Test
+    public void Teste_DeveRetornarExcecaoArquivoNaoEncontrado() {
+        try {
+            var filePath = "data" + File.separator + "test" + File.separator + "user.json";
+            var file = new File(filePath);
+            if (file.exists()) file.delete();
+            UserPersistence.getInstance().findAll();
+            fail();
+        } catch (IOException e) {
+            assert e.getMessage().equals("File not found");
+        }
+    }
+
+    @Test
+    public void Teste_DeveLerUsuarioVazio() {
+        try {
+            UserPersistence.getInstance().save(new HashMap<>());
+            var users = UserPersistence.getInstance().findAll();
+            assert users != null;
+            assert users.isEmpty();
+        } catch (IOException e) {
+            fail();
+        }
+    }
+
 }
