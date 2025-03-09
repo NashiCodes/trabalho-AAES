@@ -6,19 +6,19 @@ import org.nashi.devices.states.DeviceState;
 public class RobotVacuumOff extends DeviceState {
     private static final RobotVacuumOff INSTANCE = new RobotVacuumOff();
 
+    private RobotVacuumOff() {
+        this.DefaultMessage = "is now off.";
+    }
+
     public static RobotVacuumOff getInstance() {
         return INSTANCE;
     }
 
     @Override
-    public String getState(Device device) {
-        return device.getName() + " is now off.";
-    }
-
-    @Override
-    public String turnOn(Device device) {
-        device.setState(RobotVacuumOn.getInstance());
-        return device.getName() + " is on, please select a mode.";
+    public void turnOn(Device device) {
+        var instance = RobotVacuumOn.getInstance();
+        device.setState(instance);
+        device.notifyObservers(instance.getMessage(device));
     }
 
 }

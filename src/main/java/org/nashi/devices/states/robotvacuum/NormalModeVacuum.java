@@ -6,37 +6,36 @@ import org.nashi.devices.states.DeviceState;
 public class NormalModeVacuum extends DeviceState {
     private static final NormalModeVacuum INSTANCE = new NormalModeVacuum();
 
+    private NormalModeVacuum() {
+        this.DefaultMessage = "is now in normal mode. (Cleaning all rooms)";
+    }
+
     public static NormalModeVacuum getInstance() {
         return INSTANCE;
     }
 
     @Override
-    public String getState(Device device) {
-        return device.getName() + " is now in normal mode. (Cleaning all rooms)";
-    }
-
-
-    @Override
-    public String turnOff(Device device) {
-        device.setState(RobotVacuumOff.getInstance());
-        return device.getName() + " is now off.";
+    public void turnOff(Device device) {
+        var instance = RobotVacuumOff.getInstance();
+        device.setState(instance);
+        device.notifyObservers(instance.getMessage(device));
     }
 
     @Override
-    public String SpotModeVacuum(Device device) {
+    public void SpotModeVacuum(Device device) {
         device.setState(SpotModeVacuum.getInstance());
-        return device.getName() + " is now in spot mode. (Cleaning a specific area)";
+        device.notifyObservers(device.getState().getMessage(device));
     }
 
     @Override
-    public String QuietModeVacuum(Device device) {
+    public void QuietModeVacuum(Device device) {
         device.setState(QuietModeVacuum.getInstance());
-        return device.getName() + " is now in quiet mode. (Cleaning all rooms quietly)";
+        device.notifyObservers(device.getState().getMessage(device));
     }
 
     @Override
-    public String SelfCleaningModeVacuum(Device device) {
+    public void SelfCleaningModeVacuum(Device device) {
         device.setState(SelfCleaningModeVacuum.getInstance());
-        return device.getName() + " is now in self-cleaning mode. (Cleaning its own dustbin)";
+        device.notifyObservers(device.getState().getMessage(device));
     }
 }

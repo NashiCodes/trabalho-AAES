@@ -6,6 +6,10 @@ import org.nashi.devices.states.DeviceState;
 public class EcoModeLight extends DeviceState {
     private static final EcoModeLight INSTANCE = new EcoModeLight();
 
+    private EcoModeLight() {
+        this.DefaultMessage = "is now in Eco mode. (color white, low brightness)";
+    }
+
     public static EcoModeLight getInstance() {
         return INSTANCE;
     }
@@ -16,26 +20,23 @@ public class EcoModeLight extends DeviceState {
     }
 
     @Override
-    public String turnOff(Device device) {
-        device.setState(SmartLightOff.getInstance());
-        return device.getName() + " turned off";
+    public void turnOff(Device device) {
+        var instance = SmartLightOff.getInstance();
+        device.setState(instance);
+        device.notifyObservers(instance.getMessage(device));
     }
 
     @Override
-    public String turnOn(Device device) {
-        device.setState(SmartLightOn.getInstance());
-        return device.getName() + " is on but in standby mode (no color)";
+    public void RainbowModeLight(Device device) {
+        var instance = RainbowModeLight.getInstance();
+        device.setState(instance);
+        device.notifyObservers(instance.getMessage(device));
     }
 
     @Override
-    public String RainbowModeLight(Device device) {
-        device.setState(RainbowModeLight.getInstance());
-        return device.getName() + " is running Rainbow Mode (color gradient)";
-    }
-
-    @Override
-    public String NormalModeLight(Device device) {
-        device.setState(NormalModeLight.getInstance());
-        return device.getName() + " is running Normal Mode (color on, medium brightness)";
+    public void NormalModeLight(Device device) {
+        var instance = NormalModeLight.getInstance();
+        device.setState(instance);
+        device.notifyObservers(instance.getMessage(device));
     }
 }

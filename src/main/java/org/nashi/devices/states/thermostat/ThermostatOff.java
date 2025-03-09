@@ -6,18 +6,18 @@ import org.nashi.devices.states.DeviceState;
 public class ThermostatOff extends DeviceState {
     private static final ThermostatOff INSTANCE = new ThermostatOff();
 
+    private ThermostatOff() {
+        this.DefaultMessage = "is now off.";
+    }
+
     public static ThermostatOff getInstance() {
         return INSTANCE;
     }
 
     @Override
-    public String getState(Device device) {
-        return device.getName() + " is off";
-    }
-
-    @Override
-    public String turnOn(Device device) {
-        device.setState(ThermostatOn.getInstance());
-        return device.getName() + " is on and running at 20 degrees Celsius";
+    public void turnOn(Device device) {
+        var instance = ThermostatOn.getInstance();
+        device.setState(instance);
+        device.notifyObservers(instance.getMessage(device));
     }
 }

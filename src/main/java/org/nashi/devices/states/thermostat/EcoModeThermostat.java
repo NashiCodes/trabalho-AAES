@@ -6,42 +6,46 @@ import org.nashi.devices.states.DeviceState;
 public class EcoModeThermostat extends DeviceState {
     private static final EcoModeThermostat INSTANCE = new EcoModeThermostat();
 
+    private EcoModeThermostat() {
+        this.DefaultMessage = "is now in eco mode.";
+    }
+
     public static EcoModeThermostat getInstance() {
         return INSTANCE;
     }
 
     @Override
-    public String getState(Device device) {
-        return device.getName() + " is running Eco Mode (adjusting the HVAC system to use less power)";
+    public void turnOff(Device device) {
+        var instance = ThermostatOff.getInstance();
+        device.setState(instance);
+        device.notifyObservers(instance.getMessage(device));
     }
 
     @Override
-    public String turnOff(Device device) {
-        device.setState(ThermostatOff.getInstance());
-        return device.getName() + " is off";
+    public void NormalModeThermostat(Device device) {
+        var instance = NormalModeThermostat.getInstance();
+        device.setState(instance);
+        device.notifyObservers(instance.getMessage(device));
     }
 
     @Override
-    public String NormalModeThermostat(Device device) {
-        device.setState(NormalModeThermostat.getInstance());
-        return device.getName() + " is running Normal Mode (temperature set to 20° C)";
+    public void HighModeThermostat(Device device) {
+        var instance = HighModeThermostat.getInstance();
+        device.setState(instance);
+        device.notifyObservers(instance.getMessage(device));
     }
 
     @Override
-    public String HighModeThermostat(Device device) {
-        device.setState(HighModeThermostat.getInstance());
-        return device.getName() + " is running High Mode (temperature set to 25° C)";
+    public void LowModeThermostat(Device device) {
+        var instance = LowModeThermostat.getInstance();
+        device.setState(instance);
+        device.notifyObservers(instance.getMessage(device));
     }
 
     @Override
-    public String LowModeThermostat(Device device) {
-        device.setState(LowModeThermostat.getInstance());
-        return device.getName() + " is running Low Mode (temperature set to 10° C)";
-    }
-
-    @Override
-    public String TurboModeThermostat(Device device) {
-        device.setState(TurboModeThermostat.getInstance());
-        return device.getName() + " is running Turbo Mode (temperature set to 30° C)";
+    public void TurboModeThermostat(Device device) {
+        var instance = TurboModeThermostat.getInstance();
+        device.setState(instance);
+        device.notifyObservers(instance.getMessage(device));
     }
 }

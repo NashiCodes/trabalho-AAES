@@ -1,89 +1,122 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.nashi.devices.entities.SmartLight;
-import org.nashi.devices.factories.DeviceFactory;
+import org.nashi.devices.factories.RobotVacuumFactory;
+import org.nashi.devices.factories.SmartLightFactory;
+import org.nashi.devices.factories.ThermoStatFactory;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class DeviceFactoryTest {
+    SmartLightFactory smartLightFactory;
+    ThermoStatFactory thermoStatFactory;
+    RobotVacuumFactory robotVacuumFactory;
+
+    @BeforeEach
+    public void setUp() {
+        smartLightFactory = SmartLightFactory.getInstance();
+        thermoStatFactory = ThermoStatFactory.getInstance();
+        robotVacuumFactory = RobotVacuumFactory.getInstance();
+    }
 
     @Test
-    void deveRetornarExceptionDeTypeVazio() {
+    public void DeveRetornarExcecaoParaNomesVazioSmartLight() {
         try {
-            DeviceFactory.createDevice("", "Test Device");
-            fail("Should throw an exception of empty type");
+            smartLightFactory.createDevice("");
+            fail();
         } catch (IllegalArgumentException e) {
-            assert e.getMessage().equals("Type cannot be empty");
+            assertEquals("Name cannot be empty", e.getMessage());
         }
     }
 
     @Test
-    void deveRetornarExceptionDeNomeVazio() {
+    public void DeveRetornarExcecaoParaNomesVazioThermoStat() {
         try {
-            DeviceFactory.createDevice("TestDevice", "");
-            fail("Should throw an exception of empty name");
+            thermoStatFactory.createDevice("");
+            fail();
         } catch (IllegalArgumentException e) {
-            assert e.getMessage().equals("Name cannot be empty");
+            assertEquals("Name cannot be empty", e.getMessage());
         }
     }
 
     @Test
-    void deveRetornarExceptionDeTypeEmBranco() {
+    public void DeveRetornarExcecaoParaNomesVazioRobotVacuum() {
         try {
-            DeviceFactory.createDevice(" ", "Test Device");
-            fail("Should throw an exception of blank type");
+            robotVacuumFactory.createDevice("");
+            fail();
         } catch (IllegalArgumentException e) {
-            assert e.getMessage().equals("Type cannot be blank");
+            assertEquals("Name cannot be empty", e.getMessage());
         }
     }
 
     @Test
-    void deveRetornarExceptionDeNomeEmBranco() {
+    public void DeveRetornarExcecaoParaNomesBrancoSmartLight() {
         try {
-            DeviceFactory.createDevice("invalid_devices.TestDevice", " ");
-            fail("Should throw an exception of blank name");
+            smartLightFactory.createDevice(" ");
+            fail();
         } catch (IllegalArgumentException e) {
-            assert e.getMessage().equals("Name cannot be blank");
+            assertEquals("Name cannot be blank", e.getMessage());
         }
     }
 
     @Test
-    void deveRetornarDispositivoNaoEncontrado() {
+    public void DeveRetornarExcecaoParaNomesBrancoThermoStat() {
         try {
-            DeviceFactory.createDevice("NotADevice", "Not a device");
-            fail("Should throw an exception of device not found");
+            thermoStatFactory.createDevice(" ");
+            fail();
         } catch (IllegalArgumentException e) {
-            assert e.getMessage().equals("Device type not found");
+            assertEquals("Name cannot be blank", e.getMessage());
         }
     }
 
     @Test
-    void deveRetornarTipoDeDispositivoInvalido() {
+    public void DeveRetornarExcecaoParaNomesBrancoRobotVacuum() {
         try {
-            DeviceFactory.createDevice("invalid_devices.TestDevice", "Invalid Test Device");
-            fail("Should throw an exception of invalid device");
+            robotVacuumFactory.createDevice(" ");
+            fail();
         } catch (IllegalArgumentException e) {
-            assert e.getMessage().equals("The type is not a valid device");
+            assertEquals("Name cannot be blank", e.getMessage());
         }
     }
 
     @Test
-    void deveRetornarExceptionDeConstrutorSemParametros() {
+    public void DeveRetornarSmartLightQuandoNomeValido() {
         try {
-            var Type = "invalid_devices.TestDeviceNoConstructorArg";
-            DeviceFactory.createDevice(Type, "Test Device");
-            fail("Should throw an exception of constructor with no parameters");
-        } catch (IllegalArgumentException e) {
-            assert e.getMessage().equals("The device do not have a constructor with no parameters");
-        }
-    }
-
-    @Test
-    void deveFazerOCastParaDeviceEspecifico() {
-        try {
-            var device = (SmartLight) DeviceFactory.createDevice("SmartLight", "Room Light");
-            assert device.getName().equals("Room Light");
-        } catch (Exception e) {
+            var device = smartLightFactory.createDevice("Luz da Sala");
+            assert device != null;
+            assert device.getName().equals("Luz da Sala");
+            var assertDeviceToString = "Smart Light: Luz da Sala\nColor: White\nBrightness: 50\n";
+            assert device.toString().equals(assertDeviceToString);
+        } catch (RuntimeException e) {
             fail();
         }
     }
+
+    @Test
+    public void DeveRetornarThermoStatQuandoNomeValido() {
+        try {
+            var device = thermoStatFactory.createDevice("Termostato da Sala");
+            assert device != null;
+            assert device.getName().equals("Termostato da Sala");
+            var assertDeviceToString = "Thermostat: Termostato da Sala\nTemperature: 20\nHumidity: 50\nConsumption: 2" +
+                    ".0\n";
+            assert device.toString().equals(assertDeviceToString);
+        } catch (RuntimeException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void DeveRetornarRobotVacuumQuandoNomeValido() {
+        try {
+            var device = robotVacuumFactory.createDevice("Aspirador da Sala");
+            assert device != null;
+            assert device.getName().equals("Aspirador da Sala");
+            var assertDeviceToString = "Dirty Level: 0\nArea to clean: All\nNoise Level: 0\n";
+            assert device.toString().equals(assertDeviceToString);
+        } catch (RuntimeException e) {
+            fail();
+        }
+    }
+
 }

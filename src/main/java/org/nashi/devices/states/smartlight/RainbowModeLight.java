@@ -6,24 +6,32 @@ import org.nashi.devices.states.DeviceState;
 public class RainbowModeLight extends DeviceState {
     private static final RainbowModeLight INSTANCE = new RainbowModeLight();
 
+    private RainbowModeLight() {
+        this.DefaultMessage = "is now in rainbow mode. (color gradient)";
+    }
+
     public static RainbowModeLight getInstance() {
         return INSTANCE;
     }
 
     @Override
-    public String getState(Device device) {
-        return device.getName() + " is running Rainbow Mode (color gradient)";
+    public void turnOff(Device device) {
+        var instance = SmartLightOff.getInstance();
+        device.setState(instance);
+        device.notifyObservers(instance.getMessage(device));
     }
 
     @Override
-    public String EcoModeLight(Device device) {
-        device.setState(EcoModeLight.getInstance());
-        return device.getName() + " is running Eco Mode (low brightness)";
+    public void EcoModeLight(Device device) {
+        var instance = EcoModeLight.getInstance();
+        device.setState(instance);
+        device.notifyObservers(instance.getMessage(device));
     }
 
     @Override
-    public String NormalModeLight(Device device) {
-        device.setState(NormalModeLight.getInstance());
-        return device.getName() + " is running Normal Mode (medium brightness)";
+    public void NormalModeLight(Device device) {
+        var instance = NormalModeLight.getInstance();
+        device.setState(instance);
+        device.notifyObservers(instance.getMessage(device));
     }
 }

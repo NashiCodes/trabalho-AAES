@@ -12,6 +12,8 @@ public class SmartLightFactory extends DeviceFactory {
 
     @Override
     public Device concreteDevice(String deviceName) {
-        return new SmartLight(deviceName);
+        var smartLight = new SmartLight(deviceName);
+        smartLight.Initialize();
+        return smartLight;
     }
 }

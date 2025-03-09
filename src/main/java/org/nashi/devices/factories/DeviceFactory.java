@@ -13,5 +13,5 @@ public abstract class DeviceFactory {
         return concreteDevice(deviceName);
     }
 
-    public abstract Device concreteDevice(String deviceName);
+    protected abstract Device concreteDevice(String deviceName);
 }

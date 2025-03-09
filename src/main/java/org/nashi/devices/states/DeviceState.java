@@ -3,62 +3,70 @@ package org.nashi.devices.states;
 import org.nashi.devices.entities.Device;
 
 public abstract class DeviceState {
-    public abstract String getState(Device device);
+    protected String DefaultMessage = "This device is in an unknown state.";
 
+    public String getState(Device device) {
+        return this.getMessage(device);
+    }
 
-    public String turnOff(Device device) {
+    public String getMessage(Device device) {
+        return device.getName() + this.DefaultMessage + "\n" +
+                device + "\n";
+    }
+
+    public void turnOff(Device device) {
         throw new RuntimeException("Cannot change state to off");
     }
 
-    public String turnOn(Device device) {
+    public void turnOn(Device device) {
         throw new RuntimeException("Cannot change state to on");
     }
 
-    public String NormalModeLight(Device device) {
+    public void NormalModeLight(Device device) {
         throw new RuntimeException("Cannot change state to Normal Mode Light");
     }
 
-    public String EcoModeLight(Device device) {
+    public void EcoModeLight(Device device) {
         throw new RuntimeException("Cannot change state to Eco Mode Light");
     }
 
-    public String RainbowModeLight(Device device) {
+    public void RainbowModeLight(Device device) {
         throw new RuntimeException("Cannot change state to Rainbow Mode Light");
     }
 
-    public String NormalModeThermostat(Device device) {
+    public void NormalModeThermostat(Device device) {
         throw new RuntimeException("Cannot change state to Normal Mode Thermostat");
     }
 
-    public String EcoModeThermostat(Device device) {
+    public void EcoModeThermostat(Device device) {
         throw new RuntimeException("Cannot change state to Eco Mode Thermostat");
     }
 
-    public String HighModeThermostat(Device device) {
+    public void HighModeThermostat(Device device) {
         throw new RuntimeException("Cannot change state to High Mode Thermostat");
     }
 
-    public String LowModeThermostat(Device device) {
+    public void LowModeThermostat(Device device) {
         throw new RuntimeException("Cannot change state to Low Mode Thermostat");
     }
 
-    public String TurboModeThermostat(Device device) {
+    public void TurboModeThermostat(Device device) {
         throw new RuntimeException("Cannot change state to Turbo Mode Thermostat");
     }
 
-    public String SelfCleaningModeVacuum(Device device) {
+    public void SelfCleaningModeVacuum(Device device) {
         throw new RuntimeException("Cannot change state to Auto Cleaning Mode Vacuum");
     }
 
-    public String QuietModeVacuum(Device device) {
+    public void QuietModeVacuum(Device device) {
         throw new RuntimeException("Cannot change state to Quiet Cleaning Mode Vacuum");
     }
 
-    public String SpotModeVacuum(Device device) {
+    public void SpotModeVacuum(Device device) {
         throw new RuntimeException("Cannot change state to Turbo Cleaning Mode Vacuum");
     }
 
-    public String NormalModeVacuum(Device device) {
+    public void NormalModeVacuum(Device device) {
         throw new RuntimeException("Cannot change state to Normal Mode Vacuum");
     }
 }

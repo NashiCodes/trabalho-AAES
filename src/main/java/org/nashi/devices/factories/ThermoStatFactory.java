@@ -1,7 +1,7 @@
 package org.nashi.devices.factories;
 
 import org.nashi.devices.entities.Device;
-import org.nashi.devices.entities.ThermoStat;
+import org.nashi.devices.entities.Thermostat;
 
 public class ThermoStatFactory extends DeviceFactory {
     private static final ThermoStatFactory INSTANCE = new ThermoStatFactory();
@@ -12,6 +12,8 @@ public class ThermoStatFactory extends DeviceFactory {
 
     @Override
     public Device concreteDevice(String deviceName) {
-        return new ThermoStat(deviceName);
+        var device = new Thermostat(deviceName);
+        device.Initialize();
+        return device;
     }
 }

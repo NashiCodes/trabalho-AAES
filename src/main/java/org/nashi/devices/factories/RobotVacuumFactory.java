@@ -12,6 +12,8 @@ public class RobotVacuumFactory extends DeviceFactory {
 
     @Override
     public Device concreteDevice(String deviceName) {
-        return new RobotVacuum(deviceName);
+        var device = new RobotVacuum(deviceName);
+        device.Initialize();
+        return device;
     }
 }
