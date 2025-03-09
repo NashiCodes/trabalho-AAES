@@ -1,5 +1,9 @@
 package org.nashi.macros;
 
+import org.nashi.devices.entities.Device;
+
 public interface Command {
-    void execute();
+    String getName();
+
+    String execute(Device device);
 }
